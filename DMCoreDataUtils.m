@@ -38,7 +38,6 @@
                                  NSInteger count = 1;
                                  for (NSManagedObject *managedObject in fetchedObjects)
                                  {
-                                     
                                      NSLog(@"----- %@ %ld ----------",entity,(long)count);
                                      [self printAttributesForManagedObject:managedObject];
                                      count ++;
@@ -57,7 +56,6 @@
 
 + (void) printAttributesForManagedObject:(NSManagedObject *)managedObject
 {
-    
     NSDictionary *attributes = [managedObject.entity attributesByName];
     for (NSString *attribute in attributes)
     {
@@ -518,7 +516,6 @@
     
 }
 
-
 #pragma mark - Fetched Request
 
 + (NSFetchRequest *) fetchRequestWithEntity:(NSString *)entity
@@ -530,8 +527,7 @@
     
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:entity
                                                          inManagedObjectContext:[self managedObjectContext]];
-    
-    [fetchRequest setEntity:entityDescription];
+    fetchRequest.entity = entityDescription;
     
     NSMutableArray *descriptors = [NSMutableArray array];
     
@@ -543,19 +539,17 @@
         }
     }
     
-    [fetchRequest setSortDescriptors:descriptors];
+    fetchRequest.sortDescriptors = descriptors;
     
     if (predicate)
     {
-        [fetchRequest setPredicate:predicate];
+        fetchRequest.predicate = predicate;
     }
     
     if (fetchLimit > 0)
     {
-        [fetchRequest setFetchLimit:fetchLimit];
-        
+        fetchRequest.fetchLimit = fetchLimit;
     }
-    
     return fetchRequest;
 }
 
